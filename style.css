@@ -10,3 +10,11 @@ body{
     align-items: center;
     padding-top: 30px;
 }
+
+button{
+    width: 200px;
+    height: 50px;
+    border-radius: 40px;
+    color: pink;
+    font-size: 20px;
+}

@@ -1,29 +1,40 @@
-const app = new PIXI.Application({  
+const app = new PIXI.Application({
     width: 1000,
-    height: 1000,                    
-    antialias: true, 
-    transparent: false, 
+    height: 1000,
+    antialias: true,
+    transparent: false,
     resolution: 1
 });
 
 document.body.appendChild(app.view);
 
+const clearbtn = document.getElementById('clearbtn');
 const graphics = new PIXI.Graphics();
 app.stage.addChild(graphics);
 
-let previousPosition = null;
+let onMouseMove = (() => {
+  let previousPosition;
+
+  return event => {
+    const { clientX, clientY } = event;
+    const { left, top } = app.view.getBoundingClientRect();
+    const x = clientX - left;
+    const y = clientY - top;
+
+    if (previousPosition) {
+      graphics.lineStyle(2, 0xFF0000);
+      graphics.moveTo(previousPosition.x, previousPosition.y);
+      graphics.lineTo(x, y);
+      app.renderer.render(app.stage);
+    }
+
+    previousPosition = { x, y };
+  };
+})();
 
 app.renderer.view.addEventListener('mousemove', onMouseMove);
 
-function onMouseMove(event) {
-    if (previousPosition) {
 
-        graphics.lineStyle(2, 0xFF0000, );
-        graphics.moveTo(previousPosition.x, previousPosition.y);
-        graphics.lineTo(event.clientX, event.clientY);
-        app.renderer.render(app.stage);
-
-    }
-    
-    previousPosition = { x: event.clientX, y: event.clientY };
-}
+  clearbtn.addEventListener('click', () => {
+    graphics.clear();
+  })
